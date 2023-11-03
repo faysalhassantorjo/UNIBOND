@@ -1,0 +1,15 @@
+<form method="POST">
+        {% csrf_token %}
+
+        <label>Phone:</label>
+        <input type="text" name="Phone" placeholder="">
+        <label>Currently Studying</label>
+        <input type="text" name="studying" placeholder="">
+        <label>Current Job</label>
+        <input type="text" name="job" placeholder="">
+        <label>Company Name</label>
+        <input type="text" name="company-name" placeholder="">
+
+
+        <input type="submit" value="Register">
+    </form>

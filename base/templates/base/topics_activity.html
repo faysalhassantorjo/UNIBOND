@@ -1,0 +1,10 @@
+        <h3  style="background-color: #e5e5e5; margin: 5px;padding: 5px; border-radius: 10px; text-align: center;">See Alumni Activity </h3>
+        <hr>
+          <div style="background-color: #191919; margin: 5px;padding: 5px; border-radius: 10px; text-align: center;">
+                    <a style="color: #e5e5e5;" href="{%url 'home' %}">All</a>
+          </div>
+        {% for topic in topics %}
+                <div style="background-color: #191919; margin: 5px;padding: 5px; border-radius: 10px; text-align: center;">
+                    <a style="color: #e5e5e5;" href="{%url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
+                </div>
+        {% endfor %}

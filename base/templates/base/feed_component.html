@@ -1,0 +1,87 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <div class="roomList">
+          <div class="roomList__header" style="background:#191919; padding:20px; border-radius: 10px;">
+<!--            <div>-->
+<!--              <p>{{room_count}} Post available</p>-->
+<!--            </div>-->
+               {% if request.user.is_authenticated %}
+          <div class="header__user">
+            <a href="profile.html">
+              <div class="avatar avatar--medium active" style="">
+<!--                <img src="https://randomuser.me/api/portraits/men/37.jpg" />-->
+              </div>
+            </a>
+
+          </div>
+          {% else %}
+       <a href="{% url 'login' %}">
+           <div style="max-width: 60px;">
+            <img src="{% static 'assets/avatar.svg' %}" />
+           </div>
+          </a>
+        {% endif %}
+
+            <a style="margin-right: 240px;" class="btn button" href="{% url 'create_room' %}">
+<!--              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">-->
+<!--                <title>add</title>-->
+<!--                <path-->
+<!--                  d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"-->
+<!--                ></path>-->
+<!--              </svg>-->
+              What's on your mind?
+            </a>
+          </div>
+          {% for room in rooms %}
+          <div class="roomListRoom">
+            <div class="roomListRoom__header">
+              <a  class="roomListRoom__author" href="{% url 'profile' room.host.id%}">
+                <div class="avatar avatar--small">
+<!--                  <img src="https://randomuser.me/api/portraits/women/11.jpg" />-->
+                </div>
+
+                    <span style="text-transform: capitalize; font-size: 1.9rem">{{room.host.username}}</span>
+
+              </a>
+
+    <div class="icon" onclick="toggleOptions()" style="display: none;">
+    <i class="fa-solid fa-ellipsis"></i>
+</div>
+<div class="option" >
+    {% if request.user == room.host %}
+        <a href="{% url 'update-room' room.id%}"><i class="fa-regular fa-pen-to-square"></i> &nbsp;</a>
+        <a style="color: red" href="{% url 'delete-room' room.id%}"><i class="fa-solid fa-trash"></i></a>
+    {% endif %}
+</div>
+
+
+            </div>
+                <div class="roomListRoom__actions">
+                <span style="opacity: .8; font-size: 12px">{{room.created | timesince}} ago</span>
+              </div>
+
+            <div class="roomListRoom__content">
+<!--              <a style="color: #fff; weight:bold;" href="{% url 'room' room.id %}"> {{room.name}}</a>-->
+              <p style="color: #e5e5e5;">
+               {{room.description}}
+              </p>
+
+              <img src="{{room.imageURL}}" alt="{{room.imageURL}}" width="400" height="300">
+            </div>
+            <div class="roomListRoom__meta">
+                <a href="{% url 'room' room.id%}" class="roomListRoom__joined">
+                <i class="fa-solid fa-people-group"></i>
+                  {% for key, value in room_participants_counts.items %}
+                        {% if key == room.id %}
+                            {{ value }}
+                        {% endif %}
+                  {% endfor %}
+
+              </a>
+                <a style="color: #e5e5e5; weight:bold;" > {{room.topic}}</a>
+                <a href="{% url 'room' room.id %}" class="roomListRoom__topic">Comment</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
