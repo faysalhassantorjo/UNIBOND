@@ -1,15 +1,65 @@
-<form method="POST">
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+
+.profile-form-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+
+</style>
+<div class="profile-form-container">
+    <form method="post" enctype="" class="profile-form" action="{% url 'updateProfile'  pk=id %}">
         {% csrf_token %}
-
-        <label>Phone:</label>
-        <input type="text" name="Phone" placeholder="">
-        <label>Currently Studying</label>
-        <input type="text" name="studying" placeholder="">
-        <label>Current Job</label>
-        <input type="text" name="job" placeholder="">
-        <label>Company Name</label>
-        <input type="text" name="company-name" placeholder="">
-
-
-        <input type="submit" value="Register">
+        
+        
+        <div class="form-group">
+            <label for="currently_studying">Currently Studying:</label>
+            <input type="text" id="currently_studying" name="currently_studying">
+        </div>
+        
+        <div class="form-group">
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" name="companyName">
+        </div>
+        
+        <div class="form-group">
+            <label for="current_job">Current Job:</label>
+            <input type="text" id="current_job" name="current_job" >
+        </div>
+        
+        <div class="form-group">
+            <label for="phon_number">Phone Number:</label>
+            <input type="tel" id="phon_number" name="phon_number">
+        </div>
+        
+     
+        
+        <div class="form-group">
+            <input type="submit" value="Update Profile">
+        </div>
     </form>
+</div>
+{% endblock %}

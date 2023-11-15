@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import  UserCreationForm
 from .imageForm import UserImageForm
+from django.shortcuts import get_object_or_404
 # Create your views here.
 from  .forms import RoomForm
 # from .profile import Profile
@@ -17,23 +18,46 @@ from django.db.models import Q
 
 def userProfile(request,pk):
     user=User.objects.get(id=pk)
-    userinfo=UserProfile.objects.all()
+    userinfo,created=UserProfile.objects.get_or_create(user=user)
     rooms=user.room_set.all() # eknae user object er joto gula room(Model) ace sob peye jabo
     room_messages=user.message_set.all()
     topics=Topic.objects.all()
-    context={'user':user,'rooms':rooms,'room_messages':room_messages,'topics':topics,'userInfo':userinfo}
-    return render(request,'base/profile.html',context)
+    context={'user':user,'room_messages':room_messages,'topics':topics,'userInfo':userinfo}
+    print('pritoms userinfo: ',userinfo)
+  
+    context={
+        'phon_number':userinfo.phon_number,
+        'current_job':userinfo.current_job,
+        'currently_studying':userinfo.currently_studying,
+        'companyName':userinfo.companyName,
 
+        'rooms':rooms,
+        'room_creator':user,
+        'room_creator_mail':user.email,
+        'id':pk
+    }
+    return render(request,'base/profile.html',context)
+from django.urls import reverse
 def updateProfile(request,pk):
+ 
     if request.method=='POST':
-        phone=request.POST.get("Phone")
-        studying=request.POST.get("password")
-        job=request.POST.get("job")
-        company=request.POST.get("company-name")
-    # try:
-    #     user=request.user
-    #     profile=UserProfile.objects.get_or_create(id=id,user=user)
-    context={}
+        phone=request.POST.get("phon_number")
+    
+        job=request.POST.get("current_job")
+        company=request.POST.get("companyName")
+        currently_studying=request.POST.get("currently_studying")
+
+        # obj=UserProfile.objects.create(user=request.user,phon_number=phone)
+        obj=get_object_or_404(UserProfile,id=pk)
+        obj.phon_number=phone
+        obj.current_job=job
+        obj.companyName=company
+        obj.currently_studying=currently_studying
+        obj.save()
+        return redirect(reverse('profile', kwargs={'pk': pk}))
+    context={
+        'id':pk
+    }
     return render(request,'base/updateUserProfile.html',context)
 
 def loginPage(request):
@@ -108,16 +132,6 @@ def room(request, pk):
 
     participants = room.participants.all()
 
-    if request.method == 'POST':
-        form = UserImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.user = request.user
-            instance.room = room  # Associate the image with the room
-            instance.save()
-    else:
-        form = UserImageForm()  # Move this line outside the if-else block
-
     if request.method == "POST":
         message = Message.objects.create(
             user=request.user,
@@ -131,7 +145,6 @@ def room(request, pk):
         'room': room,
         'room_messages': room_messages,
         'participants': participants,
-        'form': form,
     }
     return render(request, "base/room.html", context)
 @login_required(login_url='login')
@@ -150,18 +163,14 @@ def createRoom(request):
 @login_required(login_url='login')
 def updateRoom(request,pk):
     room=Room.objects.get(id=pk)
-    form=RoomForm(instance=room)
+    # form=RoomForm(instance=room)
 
-    if request.user != room.host:
-        return HttpResponse("Your are not the room creator")
+    # if request.user != room.host:
+    #     return HttpResponse("Your are not the room creator")
 
-    if request.method == "POST":
-        form = RoomForm(request.POST,instance=room)
-        if form.is_valid():
-            form.save()
-        return redirect('home')
-    context={'form':form}
-    return render(request,'base/room_form.html',context)
+    # if request.method == "POST":
+        
+    return render(request,'base/room_form.html')
 
 @login_required(login_url='login')
 def deleteRoom(request,pk):

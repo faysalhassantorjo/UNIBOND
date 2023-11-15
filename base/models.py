@@ -50,7 +50,7 @@ class Message(models.Model):
 
 class UserProfile(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    currently_studying=models.CharField(max_length=200)
-    companyName=models.CharField(max_length=200,default=' ')
-    current_job=models.CharField(max_length=200,default='')
-    phon_number=models.CharField(max_length=20,default=' ')
+    currently_studying=models.CharField(default=None, max_length=200,null=True)
+    companyName=models.CharField(max_length=200,default=None,null=True)
+    current_job=models.CharField(max_length=200,default=None,null=True)
+    phon_number=models.CharField(max_length=20,default=None,null=True)

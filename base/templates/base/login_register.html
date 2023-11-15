@@ -2,30 +2,154 @@
 
 {% block content %}
 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input, select {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    p {
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    a:hover {
+        color: #0056b3;
+    }
+</style>
+
 {% if page == "login" %}
-<div>
-    <form method="POST">
-        {% csrf_token %}
-        <label>User Name:</label>
-        <input type="text" name="username" placeholder="Enter username">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter Password">
-        <input type="submit" value="login">
-    </form>
-    <p>haven't signed up yet?</p>
-    <a href="{% url 'register' %}">Sign Up</a>
-</div>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <label>User Name:</label>
+            <input type="text" name="username" placeholder="Enter username">
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Password">
+            <input type="submit" value="Login">
+        </form>
+        <p>Haven't signed up yet?</p>
+        <a href="{% url 'register' %}">Sign Up</a>
+    </div>
 {% else %}
+   <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    label {
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="submit"] {
+        background-color: #191919;
+        color: white;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    p {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    a:hover {
+        color: #0056b3;
+    }
+</style>
+
 <div>
-    <form method="POST">
-        {% csrf_token %}
-
-     {{form.as_p}}
-
-        <input type="submit" value="Register">
-    </form>
-    <p>already signed up yet?</p>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="file" name="user_profile">
+    <button type="submit">Register</button>
+  </form>
+  
+    <p>Already signed up yet?</p>
     <a href="{% url 'login' %}">Login</a>
 </div>
+
 {% endif %}
+
 {% endblock %}
