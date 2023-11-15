@@ -25,24 +25,20 @@
     label {
         margin-bottom: 8px;
         font-weight: bold;
+        color:#fff;
+        font-size: 1.5rem;
     }
 
     input, select {
         padding: 10px;
         margin-bottom: 15px;
-        border: 1px solid #ccc;
+        border: 1px solid rgb(255, 255, 255);
         border-radius: 4px;
+        font-size: 1.5rem;
     }
 
-    input[type="submit"] {
-        background-color: #4caf50;
-        color: white;
-        cursor: pointer;
-    }
 
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
+  
 
     p {
         margin-top: 15px;
@@ -68,11 +64,12 @@
             <input type="text" name="username" placeholder="Enter username">
             <label>Password:</label>
             <input type="password" name="password" placeholder="Enter Password">
-            <input type="submit" value="Login">
+            <input type="submit" class="btn btn-light" style="font-size: 1.5rem;" value="Login">
         </form>
-        <p>Haven't signed up yet?</p>
-        <a href="{% url 'register' %}">Sign Up</a>
+        <p style="color: #fff; font-size: 1.5rem;">Haven't signed up yet?</p>
+        <a href="{% url 'register' %}" class="btn btn-outline-light" style="font-size: 1.5rem;">Sign Up</a>
     </div>
+ 
 {% else %}
    <style>
     body {
@@ -121,21 +118,20 @@
         background-color: #555;
     }
 
-    p {
+   form p {
         margin-top: 15px;
         margin-bottom: 5px;
-        color: #555;
+        color: #ffffff;
+        font-size: 1.5rem;
     }
 
-    a {
-        text-decoration: none;
-        color: #007bff;
-        font-weight: bold;
+    form ul li{
+        color: rgb(190, 187, 187);
+        font-size: 1rem;
     }
 
-    a:hover {
-        color: #0056b3;
-    }
+
+
 </style>
 
 <div>
@@ -143,11 +139,11 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type="file" name="user_profile">
-    <button type="submit">Register</button>
+    <button type="submit" class="btn btn-dark" style="font-size: 1.5rem;">Register</button>
   </form>
   
-    <p>Already signed up yet?</p>
-    <a href="{% url 'login' %}">Login</a>
+    <p style="color: #fff; font-size: 1.5rem;">Already signed up yet?</p>
+    <a href="{% url 'login' %}" class="btn btn-outline-dark" style="font-size: 1.5rem;">Login</a>
 </div>
 
 {% endif %}

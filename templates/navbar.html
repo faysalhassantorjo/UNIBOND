@@ -2,9 +2,9 @@
 
 <header class="header header--loggedIn">
       <div class="container">
-        <a href="/" class="header__logo">
-          <img src="{% static 'images/logo.png' %}" height="100" width="100"/>
-          <h1 style="color: #fff;">UniBond</h1>
+        <a href="/" class="header__logo" style="text-decoration: none;">
+          <img src="{% static 'images/logo.png' %}" style="height: 60px; width: auto;"/>
+          <h1 style="color: #a2a2a2;" class="txt">UniBond</h1>
         </a>
         <form class="header__search"  method="GET" action="{% url 'home' %}">
           <label>
@@ -14,7 +14,7 @@
                 d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"
               ></path>
             </svg>
-            <input name="q" placeholder="Search for Post..." />
+            <input name="q" style="color: #a2a2a2; font-size: 1.5rem;" placeholder="Search for Post..." />
           </label>
         </form>
         <nav class="header__menu">
@@ -25,15 +25,16 @@
           <div class="header__user">
             <a href="">
               <div class="avatar avatar--medium active">
-<!--                <img src="https://randomuser.me/api/portraits/men/37.jpg" />-->
+               <img src="https://bootdey.com/img/Content/avatar/avatar7.png" />
               </div>
-              <p>{{request.user.username}} <span>@{{request.user.username}}</span></p>
+              <p style="color: #fff; text-transform: capitalize; font-size: 1.5rem;">{{request.user.username}} 
+                <span style="text-transform: lowercase; font-size: 1rem; color:aqua">@{{request.user.username}}</span></p>
             </a>
-            <a href="{% url 'logout' %}" class="text-center">Logout</a>
+            <a href="{% url 'logout' %}" class="text-center btn btn-outline-dark" style="width: auto; font-size: 1.5rem;">Logout</a>
             
           </div>
           {% else %}
-       <a href="{% url 'login' %}">
+       <a href="{% url 'login' %}" class="text-center btn btn-outline-dark" style="width: auto; font-size: 1.5rem;">
             Login
           </a>
         {% endif %}

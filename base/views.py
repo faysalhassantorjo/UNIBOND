@@ -16,6 +16,15 @@ from .models import Room,Topic,Message,UserProfile
 from django.db.models import Q
 
 
+def addTopic(request):
+    if request.method=='POST':
+        activity=request.POST.get("activity")
+        obj=Topic.objects.create(name=activity)
+        obj.save()
+        print(activity)
+        return redirect('home')
+    return render(request,'base/topic_create.html')
+
 def userProfile(request,pk):
     user=User.objects.get(id=pk)
     userinfo,created=UserProfile.objects.get_or_create(user=user)
@@ -23,7 +32,7 @@ def userProfile(request,pk):
     room_messages=user.message_set.all()
     topics=Topic.objects.all()
     context={'user':user,'room_messages':room_messages,'topics':topics,'userInfo':userinfo}
-    print('pritoms userinfo: ',userinfo)
+    print(f'{user} userinfo: ',userinfo.currently_studying)
   
     context={
         'phon_number':userinfo.phon_number,
@@ -38,22 +47,25 @@ def userProfile(request,pk):
     }
     return render(request,'base/profile.html',context)
 from django.urls import reverse
+
 def updateProfile(request,pk):
  
     if request.method=='POST':
         phone=request.POST.get("phon_number")
+        user=User.objects.get(id=pk)
     
         job=request.POST.get("current_job")
         company=request.POST.get("companyName")
         currently_studying=request.POST.get("currently_studying")
 
-        # obj=UserProfile.objects.create(user=request.user,phon_number=phone)
-        obj=get_object_or_404(UserProfile,id=pk)
+        obj=get_object_or_404(UserProfile,user=user)
         obj.phon_number=phone
         obj.current_job=job
         obj.companyName=company
         obj.currently_studying=currently_studying
         obj.save()
+
+        
         return redirect(reverse('profile', kwargs={'pk': pk}))
     context={
         'id':pk
@@ -128,7 +140,7 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all().order_by('updated')
+    room_messages = room.message_set.all()
 
     participants = room.participants.all()
 
@@ -151,9 +163,12 @@ def room(request, pk):
 def createRoom(request):
     form = RoomForm()
     if request.method=="POST":
-        form=RoomForm(request.POST)
+        form=RoomForm(request.POST,request.FILES)
         if form.is_valid():
             room = form.save(commit=False)
+            print(room.name)
+            print(room.image)
+            print(room.imageURL)
             room.host=request.user
             room.save()
         return redirect('home')

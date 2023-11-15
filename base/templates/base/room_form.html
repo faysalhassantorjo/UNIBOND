@@ -1,11 +1,34 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Submit">
-    </form>
+
+<style>
+    form p{
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight:400;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="mt-4">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-outline-light" style="font-size: 1.5rem;" value="Submit">
+                </form>
+            </div>
+        </div>
+        <div class="col-4">
+            <p style="color: #fff; font-size: 1.5rem;">Want to add a New Activity? </p>
+            <a href="{% url 'addTopic' %}" class="btn btn-outline-light">Add</a>
+        </div>
+    </div>
 </div>
+
+
+
 {% endblock %}

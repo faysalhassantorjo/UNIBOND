@@ -89,13 +89,14 @@ color:#cccccc;
                   <div class="d-flex flex-column align-items-center text-center">
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>{{room_creator}}</h4>
+                      <h4 class="" style="text-transform: capitalize; font-size: 1.5rem;">{{room_creator}}</h4>
                       <!-- <p class="text-secondary mb-1 mb-2">Full Stack Developer</p> -->
-                    <a class="btn btn-outline-light " href="{% url 'updateProfile' id %}">
-                      Edit Your profile
-                    </a>
+                  {% if room_creator == request.user %}
+                      <a class="btn btn-outline-light txt mt-2" href="{% url 'updateProfile' id %}">
+                          Update Your Profile
+                      </a>
+                  {% endif %}
                   
-
                      
                     </div>
                   </div>
@@ -106,6 +107,11 @@ color:#cccccc;
                   <span><i class="fa-brands fa-instagram"></i></span> <span><i class="fa-brands fa-github"></i></span> <span><i class="fa-brands fa-linkedin"></i></span>
                 </div>
             </div>
+            <style>
+              h6, .txt{
+                font-size: 1.5rem;
+              }
+            </style>
             <div class="col-md-8">
               <div class="card mb-3">
                 <div class="card-body">

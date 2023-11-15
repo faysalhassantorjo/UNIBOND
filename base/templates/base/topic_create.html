@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <form method="POST">
+                {% csrf_token %}
+                <h2 style="color: #fff;" class="text-center"> Enter your Activity</h2>
+                <input type="text" name="activity" style="width: 400px; height: 30px; font-size: 1.5rem;" placeholder="">
+                <br>
+                <input class="btn btn-outline-light mt-4 " style="margin-left: 100px; font-size: 1.5rem;" type="submit">
+
+                </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+
+
+
+{% endblock%}

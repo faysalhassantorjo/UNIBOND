@@ -23,10 +23,17 @@
            </div>
           </a>
         {% endif %}
-
-            <a style="margin-right: 240px; font-size: 1.5rem;" class="btn btn-outline-light" href="{% url 'create_room' %}">
-              What's on your mind?
-            </a>
+        <style>
+          .b:hover .fa-plus {
+            color: black;
+          }
+        </style>
+        
+        <a style="font-size: 1.5rem;" class="btn btn-light b" href="{% url 'create_room' %}">
+          <i class="fa-solid fa-plus" style="color: #000000;"></i> Create a Post  
+        </a>
+        
+            
           </div>
           {% for room in rooms %}
           <div class="roomListRoom">
