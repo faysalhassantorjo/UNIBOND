@@ -1,12 +1,49 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<style>
+  /* Add this to your main.css file or create a new CSS file and link it to your template */
 
-<form method="POST" action="">
-  {% csrf_token %}
-  <p>Are you sure you want to delete "{{obj}}"</p>
-  <a href="{{request.META.HTTP_REFERER}}">Go back</a>
-  <input type="submit" value="Confirm">
-</form>
+.delete-confirmation-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.delete-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button,
+.confirm-button {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+</style>
+  <div class="delete-confirmation-container">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <p class="delete-message">Are you sure you want to delete <br>
+        <span style="color: rgb(1, 61, 1);">"{{ obj }}" </span> ?</p>
+      <div class="button-container">
+        <a class="btn btn-outline-success" href="{{ request.META.HTTP_REFERER }}">Go back</a>
+        <input class=" btn btn-danger" type="submit"  value="Confirm">
+      </div>
+    </form>
+  </div>
 {% endblock %}

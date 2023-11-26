@@ -23,11 +23,11 @@
           <!-- Logged In -->
       {% if request.user.is_authenticated %}
           <div class="header__user">
-            <a href="">
+            <a href="{% url 'profile' request.user.id %}">
               <div class="avatar avatar--medium active">
                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" />
               </div>
-              <p style="color: #fff; text-transform: capitalize; font-size: 1.5rem;">{{request.user.username}} 
+              <p style="color: #fff; text-transform: capitalize; font-size: 1.5rem;">
                 <span style="text-transform: lowercase; font-size: 1rem; color:aqua">@{{request.user.username}}</span></p>
             </a>
             <a href="{% url 'logout' %}" class="text-center btn btn-outline-dark" style="width: auto; font-size: 1.5rem;">Logout</a>

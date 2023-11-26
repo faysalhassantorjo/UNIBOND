@@ -49,8 +49,18 @@ class Message(models.Model):
         return str(self.body[:50])
 
 class UserProfile(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    status=models.CharField(max_length=10,default=' ',null=True)
     currently_studying=models.CharField(default=None, max_length=200,null=True)
     companyName=models.CharField(max_length=200,default=None,null=True)
     current_job=models.CharField(max_length=200,default=None,null=True)
     phon_number=models.CharField(max_length=20,default=None,null=True)
+    image=models.ImageField(upload_to='post/',null=True,blank=True)
+
+    @property
+    def imageURL(self):
+        try:
+            url=self.image.url
+        except:
+            url=''
+        return url

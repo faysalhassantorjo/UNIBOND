@@ -2,9 +2,10 @@
 
 
          <div class="header__user">
-                <a href="">
+                <a href="{% url 'profile' request.user.id %}">
                   <div class="avatar avatar--medium active" style="">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                    <img src="{{userImage}}" alt="">
+
                   </div>
                 </a>
                 <h4 class="mr-5" style="color:#bebcbc; font-size: 1.5rem; text-transform: capitalize;">{{request.user}}</h4>
@@ -15,7 +16,5 @@
                     <a style="font-size: 1.5rem;" class="btn btn-outline-light mt-3" href="{%url 'home' %}">All</a>
           </div>
         {% for topic in topics %}
-                <div class="">
                     <a style="font-size: 1.5rem;" class="btn btn-outline-light mt-3" href="{%url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
-                </div>
         {% endfor %}

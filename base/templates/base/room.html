@@ -17,7 +17,7 @@ body{
           <div class="room__top">
             <div class="room__topLeft">
 
-              <a class="btn btn-outline-dark" style="font-size: 1.5rem;">Back</a>
+              <a href="/" class="btn btn-outline-dark" style="font-size: 1.5rem;">Back</a>
             </div>
           </div>
           <div class="room__box scroll">
@@ -28,12 +28,9 @@ body{
               </div>
               <div class="room__hosted" >
                 <p style="text-transform: capitalize;">Hosted By
-                  <a style="color:white; font-size: 1rem;">@{{room.host}}</a></p>
+                  <a href="{% url 'profile' room.host.id %}" style="color:white; font-size: 1rem;">@{{room.host}}</a></p>
               </div>
-              <!-- <div class="room__details">
-               {{room.description}}
-              </div>
-              <span class="room__topics">{{room.topic}}</span> -->
+              
             </div>
             <div class="room__conversation " style="margin-top: -100px;">
               <div class="threads scroll" style="background-color: #00000042;">
@@ -41,7 +38,7 @@ body{
                 <div class="thread" >
                   <div class="thread__top">
                     <div class="thread__author">
-                      <a href="#" class="thread__authorInfo">
+                      <a href="{% url 'profile' message.user.id %}" class="thread__authorInfo">
                         <div class="avatar avatar--small">
                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" />
                         </div>
@@ -49,9 +46,6 @@ body{
                       </a>
                       <span class="thread__date" style="color: rgba(223, 220, 220, 0.964); font-size: 10px;">{{message.created|timesince}} ago</span>
                     </div>
-
-
-
                   
                   </div>
 
@@ -78,16 +72,16 @@ body{
 
         <!--   Start -->
         <div class="participants">
-          <h3 class="participants__top">Participants <span>(5.3k Joined)</span></h3>
+          <h3 class="participants__top">Participants <span style="color: #000000; font-size: 1.5rem;">  &nbsp; &nbsp;{{number_of_participant}} Joined</span></h3>
           <div class="participants__list scroll">
 
              {% for user in participants %}
-            <a href="profile.html" class="participant">
+            <a href="{% url 'profile' user.id %}" class="participant">
               <div class="avatar avatar--medium">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" />
               </div>
-              <p>
+              <p style="color: #fff; font-size: 1.5rem; text-transform: capitalize;">
                 {{user.username}}
-                <span>@{{user.username}}</span>
               </p>
             </a>
                {% endfor %}
@@ -97,4 +91,7 @@ body{
         <!--  End -->
       </div>
     </main>
+
+
+
 {% endblock %}

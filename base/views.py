@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.contrib import messages
+from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -39,7 +39,8 @@ def userProfile(request,pk):
         'current_job':userinfo.current_job,
         'currently_studying':userinfo.currently_studying,
         'companyName':userinfo.companyName,
-
+        'status':userinfo.status,
+        'image':userinfo.imageURL,
         'rooms':rooms,
         'room_creator':user,
         'room_creator_mail':user.email,
@@ -47,30 +48,24 @@ def userProfile(request,pk):
     }
     return render(request,'base/profile.html',context)
 from django.urls import reverse
-
+from .forms import UserProfileForm
 def updateProfile(request,pk):
- 
-    if request.method=='POST':
-        phone=request.POST.get("phon_number")
-        user=User.objects.get(id=pk)
-    
-        job=request.POST.get("current_job")
-        company=request.POST.get("companyName")
-        currently_studying=request.POST.get("currently_studying")
+    user_profile = get_object_or_404(UserProfile, user__id=pk)
 
-        obj=get_object_or_404(UserProfile,user=user)
-        obj.phon_number=phone
-        obj.current_job=job
-        obj.companyName=company
-        obj.currently_studying=currently_studying
-        obj.save()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', pk=pk)
+    else:
+        form = UserProfileForm(instance=user_profile)
 
-        
-        return redirect(reverse('profile', kwargs={'pk': pk}))
-    context={
-        'id':pk
+    context = {
+        'form': form,
+        'id': pk,
     }
-    return render(request,'base/updateUserProfile.html',context)
+    return render(request, 'base/updateUserProfile.html', context)
+
 
 def loginPage(request):
 
@@ -135,14 +130,25 @@ def home(request):
 
     print('hello ', room_participants_counts)
 
-    context = {'rooms': rooms,'topics':topics,'room_count':room_count,"room_messages":room_messages,'room_participants_counts':room_participants_counts}
+    context = {'rooms': rooms,
+               'topics':topics,
+               'room_count':room_count,
+               "room_messages":room_messages,
+               'room_participants_counts':room_participants_counts,
+                'userImage':"https://bootdey.com/img/Content/avatar/avatar7.png",
+               
+               }
     return render(request,"base/home.html",context)
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
 
+    
+
     participants = room.participants.all()
+    
+    number_of_participant=len(participants)
 
     if request.method == "POST":
         message = Message.objects.create(
@@ -157,6 +163,7 @@ def room(request, pk):
         'room': room,
         'room_messages': room_messages,
         'participants': participants,
+        'number_of_participant':number_of_participant
     }
     return render(request, "base/room.html", context)
 @login_required(login_url='login')
@@ -174,18 +181,26 @@ def createRoom(request):
         return redirect('home')
     context={"form":form}
     return render(request,'base/room_form.html',context)
-
+from django.http import HttpResponseForbidden
 @login_required(login_url='login')
-def updateRoom(request,pk):
-    room=Room.objects.get(id=pk)
-    # form=RoomForm(instance=room)
+def updateRoom(request, pk):
+    room = get_object_or_404(Room, id=pk)
 
-    # if request.user != room.host:
-    #     return HttpResponse("Your are not the room creator")
+    # Check if the user is the host of the room
+    if request.user != room.host:
+        return HttpResponseForbidden("You are not the room creator")
 
-    # if request.method == "POST":
-        
-    return render(request,'base/room_form.html')
+    if request.method == "POST":
+        form = RoomForm(request.POST, request.FILES, instance=room)
+        if form.is_valid():
+            room = form.save(commit=False)
+            room.save()
+            return redirect('home')
+    else:
+        form = RoomForm(instance=room)
+
+    context = {"form": form}
+    return render(request, 'base/room_form.html', context)
 
 @login_required(login_url='login')
 def deleteRoom(request,pk):

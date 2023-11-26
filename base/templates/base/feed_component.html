@@ -1,16 +1,17 @@
 {% load static %}
+<meta charset="UTF-8">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <div class="roomList">
+        <div class="roomList ">
           <div class="roomList__header" style="background:#191919; padding:20px; border-radius: 10px;">
 <!--            <div>-->
 <!--              <p>{{room_count}} Post available</p>-->
 <!--            </div>-->
                {% if request.user.is_authenticated %}
           <div class="header__user">
-            <a href="">
+            <a href="{% url 'profile' request.user.id %}">
               <div class="avatar avatar--medium active" style="">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+        <img src="{{userImage}}" alt="">
 
               </div>
             </a>
@@ -29,8 +30,8 @@
           }
         </style>
         
-        <a style="font-size: 1.5rem;" class="btn btn-light b" href="{% url 'create_room' %}">
-          <i class="fa-solid fa-plus" style="color: #000000;"></i> Create a Post  
+        <a style="font-size: 1.5rem; " class="btn btn-outline-light b" href="{% url 'create_room' %}">
+          Create a Post  
         </a>
         
             
@@ -48,12 +49,12 @@
               </a>
 
    
-<div class="option" >
-    {% if request.user == room.host %}
-        <a href="{% url 'update-room' room.id%}"><i class="fa-regular fa-pen-to-square" style="font-size: 20px;"></i> &nbsp;</a>
-        <a style="color: red  ;" href="{% url 'delete-room' room.id%}"><i class="fa-solid fa-trash" style="font-size: 20px;"></i></a>
-    {% endif %}
-</div>
+            <div class="option" >
+                {% if request.user == room.host %}
+                    <a href="{% url 'update-room' room.id%}"><i class="fa-regular fa-pen-to-square" style="font-size: 20px;"></i> &nbsp;</a>
+                    <a style="color: red  ;" href="{% url 'delete-room' room.id%}"><i class="fa-solid fa-trash" style="font-size: 20px;"></i></a>
+                {% endif %}
+            </div>
 
 
             </div>
@@ -61,13 +62,38 @@
                 <span style="opacity: .8; font-size: 12px ; color:#d5d5d5">{{room.created | timesince}} ago</span>
               </div>
 
-            <div class="roomListRoom__content">
-<!--              <a style="color: #fff; weight:bold;" href="{% url 'room' room.id %}"> {{room.name}}</a>-->
-              <p style="color: #e5e5e5; font-size: 1.5rem;">
-               {{room.description}}
-              </p>
-              <img src="{{room.imageURL}}" alt="{{room.imageURL}}" style="width: 100%; max-height: 350px;" >
+              <div class="roomListRoom__content">
+                <div class="descriptionContainer">
+                    <p class="shortDescription" style="background-color: #191919; color: #e5e5e5; font-size: 1.5rem; border: 0;">
+                        {{ room.description|truncatechars:100|linebreaksbr }}
+                    </p>
+                    <p class="fullDescription" style="display: none; background-color: #191919; color: #e5e5e5; font-size: 1.5rem; border: 0;">
+                        {{ room.description|linebreaksbr }}
+                        <div class="your-container-class">
+                        </div>
+                    </p>
+                </div>
+    
+                <a class="seeMoreButton" onclick="toggleDescription(this)" style="color: #e5e5e5;font-size: 1.5rem; opacity: .5; cursor: pointer;">See more</a>
+    
+                <img src="{{ room.imageURL }}" alt="{{ room.imageURL }}" style="width: 100%; max-height: 350px;">
             </div>
+    
+    
+            <script>
+              function toggleDescription(button) {
+                  var container = button.previousElementSibling; // Get the description container
+  
+                  // Toggle the visibility of short and full descriptions
+                  container.querySelector('.shortDescription').style.display = container.querySelector('.shortDescription').style.display === "none" ? "block" : "none";
+                  container.querySelector('.fullDescription').style.display = container.querySelector('.fullDescription').style.display === "none" ? "block" : "none";
+  
+                  // Toggle the "See more" text
+                  button.innerHTML = button.innerHTML === "See more" ? "See less" : "See more";
+              }
+          </script>
+            
+            
             <div class="roomListRoom__meta">
                 <a href="{% url 'room' room.id%}" class="roomListRoom__joined">
                 <i class="fa-solid fa-people-group"></i>
