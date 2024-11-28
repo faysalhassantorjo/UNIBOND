@@ -1,265 +1,514 @@
 {% extends 'main.html' %}
 
 {% block content %}
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-    body{
+  body {
 
     color: #1a202c;
     text-align: left;
-    background-color: #000000;
-}
-.main-body {
+    background-color: #212529;
+  }
+
+  .main-body {
     padding: 15px;
-}
+  }
 
 
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #191919;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-}
 
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-    padding: 1rem;
-}
-
-.gutters-sm {
+  .gutters-sm {
     margin-right: -8px;
     margin-left: -8px;
-}
+  }
 
-.gutters-sm>.col, .gutters-sm>[class*=col-] {
+  .gutters-sm>.col,
+  .gutters-sm>[class*=col-] {
     padding-right: 8px;
     padding-left: 8px;
-}
-.mb-3, .my-3 {
-    margin-bottom: 1rem!important;
-}
+  }
 
-.h-100 {
-    height: 100%!important;
-}
-.shadow-none {
-    box-shadow: none!important;
-}
-.icons{
+  .mb-3,
+  .my-3 {
+    margin-bottom: 1rem !important;
+  }
+
+  .h-100 {
+    height: 100% !important;
+  }
+
+  .shadow-none {
+    box-shadow: none !important;
+  }
+
+  /* .icons {
     background-color: #191919;
-    }
+  } */
 
-.icons span{
-padding: 10px;
-}
-.icons span i {
+  .icons span {
+    padding: 10px;
+  }
+
+  .icons span i {
     font-size: 19px;
 
-    color:#fff;
-}
-h4{
-color:	#eeeeee;
-}
+    color: #fff;
+  }
 
-h6{
-color:#cccccc;
-}
-.txt{
- color: #999999;
+  h4 {
+    color: #eeeeee;
+  }
+
+  h6 {
+    color: #cccccc;
+  }
+
+  /* .txt {
+    color: #999999;
+  } */
+</style>
+<style>
+  a {
+    text-decoration: none;
+    /* color:#dfdfdf */
+  }
+
+  .post {
+    /* background-color: #fff; */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+  }
+
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .sdfa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .left-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .right-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .right-side a {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #dfdfdf;
+  }
+
+  p,
+  .icon {
+    color: #dfdfdf;
+  }
+
+  .post-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .post-header .post-author {
+    /* font-weight: bold; */
+    color: #fff;
+    text-transform: capitalize;
+  }
+
+  .post-content {
+    margin-bottom: 20px;
+  }
+
+  .post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+
+  .post-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #dfdfdf;
+  }
+
+  .post-actions button i {
+    margin-right: 5px;
+  }
+
+  .card {
+    background-color: #343a40;
+  }
+
+  .icon {
+    font-size: 20px;
+  }
+
+  .shortDescription {
+    font-size: 1.5rem;
+  }
+
+  .fullDescription {
+    font-size: 1.5rem;
   }
 </style>
 
-  <div class="container">
-    <div class="main-body">
+<div class="container">
+  <div class="main-body">
 
 
 
-          <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
-                    {% if image %}
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-                    {% else %}
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-                    {% endif %}
-                    <div class="mt-3">
-                      <h4 class="" style="text-transform: capitalize; font-size: 1.5rem;">{{room_creator}}</h4>
-                      <!-- <p class="text-secondary mb-1 mb-2">Full Stack Developer</p> -->
-                  {% if room_creator == request.user %}
-                      <a class="btn btn-outline-light txt mt-2" href="{% url 'updateProfile' id %}">
-                          Update Your Profile
-                      </a>
-                  {% endif %}
-                  
-                     
-                    </div>
-                  </div>
-                </div>
+    <div class="row gutters-sm">
+      <div class="col-md-6 mb-3">
+        <div class="">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              {% if image %}
+              <img src="{{image}}" alt="Admin" style="height:auto;max-height: 400px; width: auto; max-width: 100%; border-radius: 10px;">
+              {% else %}
+              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" 
+                style="height: 300px; width:auto" >
+              {% endif %}
+              <div class="mt-3">
+                <!-- <h4 class="" style="text-transform: capitalize; font-size: 1.5rem;">{{room_creator}}</h4> -->
+                {% if room_creator == request.user %}
+                <a class="btn btn-light mt-2" style="font-size: 1.2rem;" href="{% url 'updateProfile' id %}">
+                  Update Your Profile
+                </a>
+                {% endif %}
+
+
               </div>
-                <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center">
-                 <span><i class="fa-brands fa-twitter"></i></span> <span><i class="fa-brands fa-facebook"></i></span>
-                  <span><i class="fa-brands fa-instagram"></i></span> <span><i class="fa-brands fa-github"></i></span> <span><i class="fa-brands fa-linkedin"></i></span>
-                </div>
             </div>
-            <style>
-              h6, .txt{
-                font-size: 1.5rem;
-              }
-            </style>
-            <div class="col-md-8">
-              <div class="card mb-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Full Name</h6>
-                    </div>
-                    <div class="col-sm-9 txt" style=" text-transform: capitalize;">
-                      {{room_creator}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Status</h6>
-                    </div>
-                    <div class="col-sm-9 txt" style=" text-transform: capitalize; color: aqua;">
-                      {{status}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Email</h6>
-                    </div>
-                    <div class="col-sm-9 txt">
-                      {{room_creator_mail}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
-                    </div>
-                    <div class="col-sm-9 txt">
-                      {{phon_number}}
-                    </div>
-                  </div>
-                  <hr>
-
-
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Currently Studying</h6>
-                    </div>
-                    <div class="col-sm-9 txt">
-                      {{currently_studying}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Current Job</h6>
-                    </div>
-                    <div class="col-sm-9 txt">
-                     {{current_job}}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Company Name</h6>
-                    </div>
-                    <div class="col-sm-9 txt">
-                      {{companyName}}
-                    </div>
-                  </div>
-                  <hr>
-                  
-                  </div>
-                </div>
-            </div>
-
-            </div>
-
-           
           </div>
-
         </div>
-    </div>
-<div class="container mt-4">
-  <div class="row">
-    <div class="text text-center">
-      <h2 style="color: #fff;">See {{room_creator}}'s Post</h2>
-    </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-4">
-
-    </div>
-    <div class="col-5">
-      {% for room in rooms %}
-      <div class="roomListRoom">
-        <div class="roomListRoom__header">
-          <a  class="roomListRoom__author" href="{% url 'profile' room.host.id %}">
-            <div class="avatar avatar--small">
-            </div>
-
-                <span style="text-transform: capitalize; font-size: 1.9rem; color: #fff;">{{room.host.username}}</span>
-
-          </a>
-
-
-<div class="option" >
-{% if request.user == room.host %}
-    <a href="{% url 'update-room' room.id%}"><i class="fa-regular fa-pen-to-square" style="font-size: 20px;"></i> &nbsp;</a>
-    <a style="color: red  ;" href="{% url 'delete-room' room.id%}"><i class="fa-solid fa-trash" style="font-size: 20px;"></i></a>
-{% endif %}
-</div>
-
-
-        </div>
-            <div class="roomListRoom__actions">
-            <span style="opacity: .8; font-size: 12px ; color:#d5d5d5">{{room.created | timesince}} ago</span>
-          </div>
-
-        <div class="roomListRoom__content">
-<!--              <a style="color: #fff; weight:bold;" href="{% url 'room' room.id %}"> {{room.name}}</a>-->
-          <p style="color: #e5e5e5; font-size: 1.5rem;">
-           {{room.description}}
-          </p>
-          <img src="{{room.imageURL}}" alt="{{room.imageURL}}" style="width: 100%; max-height: 350px;" >
-        </div>
-        <div class="roomListRoom__meta">
-            <a href="{% url 'room' room.id%}" class="roomListRoom__joined">
-            <i class="fa-solid fa-people-group"></i>
-              {% for key, value in room_participants_counts.items %}
-                    {% if key == room.id %}
-                        {{ value }}
-                    {% endif %}
-              {% endfor %}
-
-          </a>
-            <!-- <a style="color: #e5e5e5; weight:bold;" > {{room.topic}}</a> -->
-            <a href="{% url 'room' room.id %}" style="font-size: 1.5rem;" class="btn btn-outline-light">Comment</a>
+        <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center">
+          <span><i class="fa-brands fa-twitter"></i></span> <span><i class="fa-brands fa-facebook"></i></span>
+          <span><i class="fa-brands fa-instagram"></i></span> <span><i class="fa-brands fa-github"></i></span> <span><i
+              class="fa-brands fa-linkedin"></i></span>
         </div>
       </div>
-      {% endfor %}
-    </div>
-    <div class="col-3">
+      <style>
+        h6,
+        .txt {
+          font-size: 1.5rem;
+        }
+      </style>
+      <div class="col-md-6 mt-4">
+        <div class="card mb-3 shadow-sm border-0" style="border-radius: 10px;">
+          <div class="card-body">
+            <!-- Full Name -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Full Name</div>
+              <div class="col-sm-7  text-capitalize txt" style="color: #cbcbcb;">{{ room_creator }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
 
+            <!-- Status -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Status</div>
+              <div class="col-sm-7 txt" style="color: #17a2b8; text-transform: capitalize;">{{ status }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
+
+            <!-- Email -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Email</div>
+              <div class="col-sm-7  txt" style="color: #cbcbcb;">{{ room_creator_mail }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
+
+            <!-- Phone -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Phone</div>
+              <div class="col-sm-7  txt" style="color: #cbcbcb;">{{ phon_number }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
+
+            <!-- Currently Studying -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Currently Studying</div>
+              <div class="col-sm-7  txt" style="color: #cbcbcb;">{{ currently_studying }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
+
+            <!-- Current Job -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Current Job</div>
+              <div class="col-sm-7  txt" style="color: #cbcbcb;">{{ current_job }}</div>
+            </div>
+            <hr class="my-2" style="border-color: #dee2e6;">
+
+            <!-- Company Name -->
+            <div class="d-flex mb-3">
+              <div class="col-sm-5 text-secondary font-weight-bold txt">Company Name</div>
+              <div class="col-sm-7  txt" style="color: #cbcbcb;">{{ companyName }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+<div class="container">
+
+
+  <!-- Tabs navs -->
+  <ul class="nav d-flex justify-content-center nav-pills mb-3" id="ex-with-icons" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a data-mdb-pill-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab"
+        aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fa-solid fa-house me-3"></i>POST</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a data-mdb-pill-init class="nav-link" id="ex-with-icons-tab-2" href="#ex-with-icons-tabs-2" role="tab"
+        aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i class="fa-regular fa-bookmark me-2"></i>Saved</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a data-mdb-pill-init class="nav-link" id="ex-with-icons-tab-3" href="#ex-with-icons-tabs-3" role="tab"
+        aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Settings</a>
+    </li>
+  </ul>
+  <!-- Tabs navs -->
+
+  <!-- Tabs content -->
+  <div class="tab-content " id="ex-with-icons-content">
+    <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel"
+      aria-labelledby="ex-with-icons-tab-1">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="text text-center">
+            <h2 style="color: #fff; text-transform: capitalize;">See {{room_creator}}'s Post</h2>
+          </div>
+        </div>
+
+        {% for room in rooms %}
+        <div class="post " style="margin: auto;">
+          <div class="post-header">
+            <div class="left-side">
+              <a class="roomListRoom__author" href="{% url 'profile' room.host.id %}">
+                <img src="{{room.host.imageURL}}">
+              </a>
+              <div class="post-author" style="font-size: 1.7rem;">{{room.host.user.username}} <br><span
+                  style="opacity: .8; font-size: 12px ; color:#d5d5d5">{{room.created}} </span> </div>
+            </div>
+            <div class="right-side">
+              <a class="text-light"><i class="icon fa-regular fa-bookmark"></i> </a>
+              {% if request.user == room.host %}
+              <a href="{% url 'update-room' room.id%}"><i class="icon fa-regular fa-pen-to-square"
+                  style="color: #fba319;"></i> </a>
+              <a href="{% url 'delete-room' room.id%}"><i class="icon fa-solid fa-trash" style="color: #e71d1d;"></i>
+                </button></a>
+              {% endif %}
+            </div>
+
+          </div>
+          <div class="post-content">
+            <div class="roomDescriptionContainer">
+              <div class="descriptionContainer">
+                <p class="shortDescription">
+                  {{ room.description|truncatechars:100|linebreaksbr }}
+                </p>
+                <p class="fullDescription" style="display: none;">
+                  {{ room.description|linebreaksbr }}
+                <div class="your-container-class">
+                  <!-- Add any additional content or formatting here -->
+                </div>
+                </p>
+
+              </div>
+              <a class="seeMoreButton" onclick="toggleDescription(this)"
+                style="color: #fba319; font-size: 1.3rem; opacity: .5; cursor: pointer;">See more</a>
+
+            </div>
+
+            <script>
+              function toggleDescription(button) {
+                var container = button.parentElement.querySelector('.descriptionContainer'); // Get the description container
+
+                var shortDescription = container.querySelector('.shortDescription');
+                var fullDescription = container.querySelector('.fullDescription');
+
+                // Toggle display of short and full descriptions
+                if (shortDescription.style.display === "none") {
+                  shortDescription.style.display = "block";
+                  fullDescription.style.display = "none";
+                  button.innerHTML = "See more";
+                } else {
+                  shortDescription.style.display = "none";
+                  fullDescription.style.display = "block";
+                  button.innerHTML = "See less";
+                }
+              }
+            </script>
+
+
+
+
+
+
+            <img src="{{ room.imageURL }}" style="width: 100%; height: auto;" alt="Post Image">
+          </div>
+          <div class="post-actions">
+            <div>
+              <button><i class=" icon fa-regular fa-circle-up" style="color: #dfdfdf;"></i> up</button>
+
+
+              <button>
+                <a href="{% url 'room' room.id%}"> <i class="icon fa-solid fa-people-group"></i>
+                  {% for key, value in room_participants_counts.items %}
+                  {% if key == room.id %}
+                  {{ value }}
+                  {% endif %}
+                  {% endfor %}
+                </a>
+              </button>
+
+            </div>
+            <div>
+              <button><a href="{% url 'room' room.id %}"><i class="icon far fa-comment"></i> Comment</a></button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+    <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="text text-center">
+            <h2 style="color: #fff;">Saved POST</h2>
+          </div>
+        </div>
+        {% for saved_room in saved_rooms %}
+        <div class="post " style="margin: auto;">
+          <div class="post-header">
+            <div class="left-side">
+              <a class="roomListRoom__author" href="{% url 'profile' saved_room.room.host.id %}">
+                <img src="{{saved_room.room.host.imageURL}}">
+              </a>
+              <div class="post-author" style="font-size: 1.7rem;">{{saved_room.room.host.user.username}} <br><span
+                  style="opacity: .8; font-size: 12px ; color:#d5d5d5">{{saved_room.room.created}} </span> </div>
+            </div>
+            <div class="right-side">
+              <a class="text-light"><i class="icon fa-regular fa-bookmark"></i> </a>
+              {% if request.user == saved_room.room.host %}
+              <a href="{% url 'update-room' saved_room.room.id%}"><i class="icon fa-regular fa-pen-to-square"
+                  style="color: #fba319;"></i> </a>
+              <a href="{% url 'delete-room' saved_room.room.id%}"><i class="icon fa-solid fa-trash" style="color: #e71d1d;"></i>
+                </button></a>
+              {% endif %}
+            </div>
+
+          </div>
+          <div class="post-content">
+            <div class="roomDescriptionContainer">
+              <div class="descriptionContainer">
+                <p class="shortDescription">
+                  {{ saved_room.room.description|truncatechars:100|linebreaksbr }}
+                </p>
+                <p class="fullDescription" style="display: none;">
+                  {{ saved_room.room.description|linebreaksbr }}
+                <div class="your-container-class">
+                  <!-- Add any additional content or formatting here -->
+                </div>
+                </p>
+
+              </div>
+              <a class="seeMoreButton" onclick="toggleDescription(this)"
+                style="color: #fba319; font-size: 1.3rem; opacity: .5; cursor: pointer;">See more</a>
+
+            </div>
+
+            <script>
+              function toggleDescription(button) {
+                var container = button.parentElement.querySelector('.descriptionContainer'); // Get the description container
+
+                var shortDescription = container.querySelector('.shortDescription');
+                var fullDescription = container.querySelector('.fullDescription');
+
+                // Toggle display of short and full descriptions
+                if (shortDescription.style.display === "none") {
+                  shortDescription.style.display = "block";
+                  fullDescription.style.display = "none";
+                  button.innerHTML = "See more";
+                } else {
+                  shortDescription.style.display = "none";
+                  fullDescription.style.display = "block";
+                  button.innerHTML = "See less";
+                }
+              }
+            </script>
+
+
+
+
+
+
+            <img src="{{ saved_room.room.imageURL }}" style="width: 100%; height: auto;" alt="Post Image">
+          </div>
+          <div class="post-actions">
+            <div>
+              <button><i class=" icon fa-regular fa-circle-up" style="color: #dfdfdf;"></i> up</button>
+
+
+              <button>
+                <a href="{% url 'room' saved_room.room.id%}"> <i class="icon fa-solid fa-people-group"></i>
+                  {% for key, value in room_participants_counts.items %}
+                  {% if key == saved_room.room.id %}
+                  {{ value }}
+                  {% endif %}
+                  {% endfor %}
+                </a>
+              </button>
+
+            </div>
+            <div>
+              <button><a href="{% url 'room' saved_room.room.id %}"><i class="icon far fa-comment"></i> Comment</a></button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+    <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+      Tab 3 content
     </div>
   </div>
+  <!-- Tabs content -->
 </div>
-    
 
+
+<!-- MDB -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.umd.min.js"></script>
 {% endblock %}

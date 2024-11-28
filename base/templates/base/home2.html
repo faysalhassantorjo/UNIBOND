@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniBond</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedan:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        background-color: #212529;
+        font-family: "Sedan", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+    span{
+        font-family:'Courier New', Courier, monospace;
+    }
+</style>
+<style>
+    a{
+        text-decoration: none;
+        color:#dfdfdf
+    }
+    .post {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+    }
+
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .sdfa{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .left-side{
+        display: flex;
+        align-items: center;
+    }
+    .right-side{
+        display: flex;
+        align-items: center;
+    }
+    .right-side a{
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #dfdfdf;
+    }
+    p,
+    .icon  {
+        color: #dfdfdf;
+    }
+
+    .post-header img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .post-header .post-author {
+        font-weight: bold;
+        color: #fff;
+        text-transform: capitalize;
+    }
+
+    .post-content {
+        margin-bottom: 20px;
+    }
+
+    .post-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+
+
+    .post-actions button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #dfdfdf;
+    }
+
+    .post-actions button i {
+        margin-right: 5px;
+    }
+</style>
+
+<body>
+    <section class="navbar sticky-top ">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark container" style="border-radius: 10px;">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'images/logo.png' %}" width="30" height="30"
+                    class="d-inline-block align-top" alt="Logo">
+                UniBond
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="form-inline my-2 my-lg-0 mx-auto">
+                    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search..." style="background-color: #212529; border: none; color:#dfdfdf61"  aria-label="Search">
+                    <button class=" btn btn-outline-light my-2 my-sm-0" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @{{request.user}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            {% if request.user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            {% else %}
+                            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                        <div id="sidebarMobile" class="mt-2"></div>
+
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    
+
+    <style>
+        .activity-item{
+            color: #dfdfdf;
+            background-color: #ffffff43;
+        }
+        .activity-item:hover{
+            background-color: #dfdfdf;
+            color: #212122;
+        }
+        .cp{
+            background-color: #fba319; border: none;
+            color: #212122;
+        }
+        .cp:hover{
+            background-color: #ca8517;
+        }
+        
+    </style>
+    <section class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-lg-3 col-0 mt-5">
+                <p class="text-center" style="border: 1px solid #dfdfdf; font-size: 1.5rem;color: #212122; padding: 5px; border-radius: 10px; background-color: #dfdfdf;">Activity</p>
+                <div class="x text-center mt-3" style="max-width: 100%; display: flex; flex-wrap: wrap;">
+                    {% for topic in topics %}
+                    <div class="m-1"><a class="btn btn-outline-light" href="{%url 'home' %}?q={{topic.name}}">{{topic.name}}</a></div>
+                    {% endfor %}
+                  </div>
+
+                    
+             
+            </div>
+            <div class="col-lg-6 col-12 ">
+                {% for room in rooms %}
+                <div class="post bg-dark">
+                    <div class="post-header">
+                        <div class="left-side">
+                            <a  class="roomListRoom__author" href="{% url 'profile' room.host.id %}">
+                            <img src="{{room.host.imageURL}}">
+                            </a>
+                        <div class="post-author">{{room.host.user.username}} <br><span style="opacity: .8; font-size: 12px ; color:#d5d5d5">{{room.created}} </span> </div>
+                        </div>
+                        <div class="right-side">
+                            <a class="text-light"><i class="icon fa-regular fa-bookmark"></i> </a>
+                            {% if request.user == room.host %}
+                            <a href="{% url 'update-room' room.id%}" style="color: #fba319;"><i class=" fa-regular fa-pen-to-square" ></i> </a>
+                            <a href="{% url 'delete-room' room.id%}" style="color: #e71d1d;"><i class=" fa-solid fa-trash"></i> </button></a>
+                            {% endif %}
+                        </div>
+                      
+                    </div>
+                    <div class="post-content">
+                        <div class="roomDescriptionContainer">
+                            <div class="descriptionContainer">
+                                <p class="shortDescription">
+                                    {{ room.description|truncatechars:100|linebreaksbr }}
+                                </p>
+                                <p class="fullDescription" style="display: none;">
+                                    {{ room.description|linebreaksbr }}
+                                    <div class="your-container-class">
+                                        <!-- Add any additional content or formatting here -->
+                                    </div>
+                                </p>
+                            </div>
+                            <a class="seeMoreButton" onclick="toggleDescription(this)" style="color: #e5e5e5; opacity: .5; cursor: pointer;">See more</a>
+                        </div>
+                        
+                        <script>
+                            function toggleDescription(button) {
+                                var container = button.parentElement.querySelector('.descriptionContainer'); // Get the description container
+                        
+                                var shortDescription = container.querySelector('.shortDescription');
+                                var fullDescription = container.querySelector('.fullDescription');
+                        
+                                // Toggle display of short and full descriptions
+                                if (shortDescription.style.display === "none") {
+                                    shortDescription.style.display = "block";
+                                    fullDescription.style.display = "none";
+                                    button.innerHTML = "See more";
+                                } else {
+                                    shortDescription.style.display = "none";
+                                    fullDescription.style.display = "block";
+                                    button.innerHTML = "See less";
+                                }
+                            }
+                        </script>
+                        
+                        
+                          
+
+
+
+                        <img src="{{ room.imageURL }}"style="width: 100%; height: auto;"
+                            alt="Post Image">
+                    </div>
+                    <div class="post-actions">
+                        <div>
+                            <button><i class=" icon fa-regular fa-circle-up" style="color: #dfdfdf;"></i> up</button>
+                            
+                            
+                            <button> 
+                                <a href="{% url 'room' room.id%}"> <i class="icon fa-solid fa-people-group"></i> 
+                                    {% for key, value in room_participants_counts.items %}
+                                    {% if key == room.id %}
+                                        {{ value }}
+                                    {% endif %}
+                              {% endfor %}
+                             </a>
+                            </button>
+
+                        </div>
+                        <div>
+                            <button><a href="{% url 'room' room.id %}" ><i class="icon far fa-comment"></i> Comment</a></button>
+                        </div>
+                    </div>
+                </div>
+               {% endfor %}
+            </div>
+            <div class="col-lg-2 col-0 " id="sidebar">
+
+                <div class="position-fixed bg-dark p-5" style="border-radius: 10px;">
+                <div class="post-header" style="display: flex; justify-content:start;">
+                    {% if userProfile %}
+                    <img src="{{userProfile.imageURL}}"
+                        alt="Profile Picture">
+                    {% else %}
+                    <img src="https://img.freepik.com/free-photo/portrait-young-businessman-with-mustache-his-face-3d-rendering_1142-38839.jpg?size=626&ext=jpg&ga=GA1.1.1954617132.1703423548&semt=ais"
+                    alt="Profile Picture">
+                    {% endif %}
+                    <div class="post-author" style="text-transform: capitalize;">{{request.user.username}} </div>
+                </div>
+                <div>
+                    <a class="btn btn-light cp" href="{% url 'create_room' %}">
+                        Create a Post, {{request.user}}
+                    </a>
+                </div>
+                <style>
+                    .fa-facebook-messenger {
+                        background: -webkit-linear-gradient(#17e6f1, #333);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        }
+                </style>
+                <div class="post-actions m-3" style=" border-radius: 10px;" >
+                    <button style="font-size: 20px;">  <i class="fa-brands fa-facebook-messenger"></i>
+                        Messenger</button>
+                 </div>
+                <div class="post-actions m-3" style=" border-radius: 10px;" >
+                    <button style="font-size: 20px;"><i class="fa-solid fa-arrow-trend-up"></i> Treanding</button>
+                 </div>
+
+                <div class="post-actions m-3" style=" border-radius: 10px;" >
+                    <button style="font-size: 20px;"><i class="fa-solid fa-people-group" ></i> Groups</button>
+                 </div>
+                 <div class="post-actions m-3" style=" border-radius: 10px;" >
+                    <button style="font-size: 20px;"><i class="fa-regular fa-bookmark"></i> Saved</button>
+                 </div>
+                </div>
+            </div>
+        </div>
+    
+
+    </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <script>
+         $(document).ready(function() {
+            checkWindowSize();
+
+            $(window).resize(function() {
+                checkWindowSize();
+            });
+        });
+
+        function checkWindowSize() {
+            if ($(window).width() < 992) {
+                // Move sidebar content to navbar
+                $("#sidebar").children().appendTo("#sidebarMobile");
+            } else {
+                // Move sidebar content back to sidebar
+                $("#sidebarMobile").children().appendTo("#sidebar");
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

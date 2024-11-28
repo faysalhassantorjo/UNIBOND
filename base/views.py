@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from  .forms import RoomForm
 # from .profile import Profile
 
-from .models import Room,Topic,Message,UserProfile
+from .models import Room,Topic,Message,UserProfile,SavedRoom
 
 from django.db.models import Q
 
@@ -28,12 +28,11 @@ def addTopic(request):
 def userProfile(request,pk):
     user=User.objects.get(id=pk)
     userinfo,created=UserProfile.objects.get_or_create(user=user)
-    rooms=user.room_set.all() # eknae user object er joto gula room(Model) ace sob peye jabo
-    room_messages=user.message_set.all()
+    rooms=userinfo.room_set.all() # eknae user object er joto gula room(Model) ace sob peye jabo
+    room_messages=userinfo.message_set.all()
     topics=Topic.objects.all()
     context={'user':user,'room_messages':room_messages,'topics':topics,'userInfo':userinfo}
     print(f'{user} userinfo: ',userinfo.currently_studying)
-  
     context={
         'phon_number':userinfo.phon_number,
         'current_job':userinfo.current_job,
@@ -46,6 +45,11 @@ def userProfile(request,pk):
         'room_creator_mail':user.email,
         'id':pk
     }
+    if user==request.user:
+        saved_rooms = SavedRoom.objects.filter(user=userinfo)
+        context.update({
+            'saved_rooms':saved_rooms
+        })
     return render(request,'base/profile.html',context)
 from django.urls import reverse
 from .forms import UserProfileForm
@@ -84,6 +88,7 @@ def loginPage(request):
 
         if user is not None:
             login(request,user)
+            UserProfile.objects.create(user = user)
             return redirect('home')
         else:
             messages.error(request,'username and password does not exist')
@@ -117,28 +122,34 @@ def home(request):
     q=request.GET.get('q') if request.GET.get('q') !=None else ''
     rooms=Room.objects.filter(
         Q(topic__name__icontains=q) |
-        Q(name__icontains=q)|
+        # Q(name__icontains=q)|
         Q(description__icontains=q)|
-        Q(host__username__icontains=q)
+        Q(host__user__username__icontains=q)
     )
     # rooms=Room.objects.all()
     room_count=rooms.count()
     topics=Topic.objects.all()
-    room_messages=Message.objects.filter(Q(room__name__icontains=q))
+    # room_messages=Message.objects.filter(Q(room__name__icontains=q))
 
     room_participants_counts = {room.id:room.participants.count() for room in rooms}
 
     print('hello ', room_participants_counts)
-
     context = {'rooms': rooms,
                'topics':topics,
                'room_count':room_count,
-               "room_messages":room_messages,
+            #    "room_messages":room_messages,
                'room_participants_counts':room_participants_counts,
                 'userImage':"https://bootdey.com/img/Content/avatar/avatar7.png",
                
                }
-    return render(request,"base/home.html",context)
+    try:
+        userProfile = UserProfile.objects.get(user = request.user)
+        context.update({
+            'userProfile':userProfile
+        })
+    except:
+        print('unauthenticated user')
+    return render(request,"base/home2.html",context)
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
@@ -165,7 +176,7 @@ def room(request, pk):
         'participants': participants,
         'number_of_participant':number_of_participant
     }
-    return render(request, "base/room.html", context)
+    return render(request, "base/room2.html", context)
 @login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
@@ -173,10 +184,10 @@ def createRoom(request):
         form=RoomForm(request.POST,request.FILES)
         if form.is_valid():
             room = form.save(commit=False)
-            print(room.name)
             print(room.image)
             print(room.imageURL)
-            room.host=request.user
+            userprofile, created= UserProfile.objects.get_or_create(user =request.user)
+            room.host = userprofile
             room.save()
         return redirect('home')
     context={"form":form}

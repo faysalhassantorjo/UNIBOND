@@ -3,28 +3,65 @@
 {% block content %}
 
 <style>
-    form p{
-        color: #fff;
+    form p {
+        color: #1e1e1e;
         font-size: 1.5rem;
-        font-weight:400;
+        font-weight: 400;
+    }
+
+    /* Customize the form button */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /* Style the sidebar */
+    .col-lg-4 {
+        background-color: #343a40;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-white {
+        font-size: 1.3rem;
     }
 </style>
 
-<div class="container mt-5" >
-    <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
-            <div class="mt-4">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Centered Form -->
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-lg p-4" style="background-color: #d8d8d8;">
+                <h2 class="text-center mb-4" style="color: #333;">Create a New Room</h2>
                 <form method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{form.as_p}}
-                    <input type="submit" class="btn btn-outline-light" style="font-size: 1.5rem;" value="Submit">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary btn-lg" style="font-size: 1.2rem;" value="Submit">
+                    </div>
                 </form>
             </div>
         </div>
-        <div class="col-4">
-            <p style="color: #fff; font-size: 1.5rem;">Want to add a New Activity? </p>
-            <a href="{% url 'addTopic' %}" class="btn btn-outline-light" style="font-size: 1.5rem;">Add</a>
+
+        <!-- Sidebar (Add New Activity) -->
+        <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+            <div class="d-flex flex-column align-items-center">
+                <p class="text-white" style="font-size: 1.5rem;">Want to add a New Activity?</p>
+                <a href="{% url 'addTopic' %}" class="btn btn-outline-light btn-lg" style="font-size: 1.2rem;">Add New
+                    Activity</a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,12 +1,12 @@
 {% load static %}
 
 <header class="header header--loggedIn">
-      <div class="container">
-        <a href="/" class="header__logo" style="text-decoration: none;">
+      <div class="container" style="text-align: center; align-items: center;">
+        <a href="/" class="header__logo" style="text-decoration: none; margin: auto;">
           <img src="{% static 'images/logo.png' %}" style="height: 60px; width: auto;"/>
           <h1 style="color: #a2a2a2;" class="txt">UniBond</h1>
         </a>
-        <form class="header__search"  method="GET" action="{% url 'home' %}">
+        <!-- <form class="header__search"  method="GET" action="{% url 'home' %}">
           <label>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
               <title>search</title>
@@ -16,31 +16,7 @@
             </svg>
             <input name="q" style="color: #a2a2a2; font-size: 1.5rem;" placeholder="Search for Post..." />
           </label>
-        </form>
-        <nav class="header__menu">
-
-
-          <!-- Logged In -->
-      {% if request.user.is_authenticated %}
-          <div class="header__user">
-            <a href="{% url 'profile' request.user.id %}">
-              <div class="avatar avatar--medium active">
-               <img src="https://bootdey.com/img/Content/avatar/avatar7.png" />
-              </div>
-              <p style="color: #fff; text-transform: capitalize; font-size: 1.5rem;">
-                <span style="text-transform: lowercase; font-size: 1rem; color:aqua">@{{request.user.username}}</span></p>
-            </a>
-            <a href="{% url 'logout' %}" class="text-center btn btn-outline-dark" style="width: auto; font-size: 1.5rem;">Logout</a>
-            
-          </div>
-          {% else %}
-       <a href="{% url 'login' %}" class="text-center btn btn-outline-dark" style="width: auto; font-size: 1.5rem;">
-            Login
-          </a>
-        {% endif %}
-
-
-         
-        </nav>
+        </form> -->
+       
       </div>
     </header>

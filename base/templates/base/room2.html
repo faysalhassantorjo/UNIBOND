@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniBond</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedan:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        background-color: #212529;
+        font-family: "Sedan", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+</style>
+
+
+<body>
+
+
+    <section class="navbar sticky-top ">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark container" style="border-radius: 10px;">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'images/logo.png' %}" width="30" height="30" class="d-inline-block align-top"
+                    alt="Logo">
+                UniBond
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="form-inline my-2 my-lg-0 mx-auto">
+                    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search..."
+                        style="background-color: #212529; border: none; color:#dfdfdf61" aria-label="Search">
+                    <button class=" btn btn-outline-light my-2 my-sm-0" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @{{request.user}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            {% if request.user.us_authenticated %}
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            {% else %}
+                            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                        <div id="sidebarMobile" class="mt-2"></div>
+
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <style>
+        .g{
+            background-color: #f9a219;
+            color: #212529;
+            border:none;
+        }
+        .g:hover{
+            background-color: #b57816;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 bg-dark" style="border-radius: 10px; padding: 10px;">
+                <div class="room__top ">
+                    <div class="room__topLeft">
+                        <a href="/" class="btn btn-outline-light g" style="font-size: 1.5rem;">Back</a>
+                    </div>
+                </div>
+                <hr style="border:1px solid rgba(218, 218, 218, 0.675);">
+                <style>
+                    .room__info {
+                        justify-content: space-between;
+                    }
+                </style>
+                <div class="room__box scroll" style="background-color: #343a40;">
+                    <div class="room__header scroll">
+                        <div class="room__info d-flex ">
+                            <h4 class="text-center text-light">{{room.name}}</h4>
+                            <p style="color: rgb(213, 210, 210)">{{room.created}}</p>
+                        </div>
+                        <div class="room__hosted">
+                            <p style="font-size: .8rem;color:white; font-size: .8rem;">Hosted By
+                                <a href="{% url 'profile' room.host.id %}" class="text-info">@{{room.host}}</a>
+                            </p>
+                        </div>
+
+                    </div>
+                    <style>
+                        .chat-box {
+                            margin-bottom: 20px;
+                        }
+
+                        .chat-box .message {
+                            display: flex;
+                            align-items: flex-start;
+                            margin-bottom: 10px;
+                        }
+
+                        .chat-box .message .user-img {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                        }
+
+                        .chat-box .message .message-content {
+                            background-color: #212529;
+                            color: #fff;
+                            padding: 10px;
+                            border-radius: 10px;
+                        }
+
+                        .chat-box .message .message-info {
+                            font-size: 12px;
+                            color: #666;
+                            margin-top: 5px;
+                        }
+
+                        .room__conversation {
+                            max-width: 600px;
+                            margin: 20px auto;
+                            background-color: #212529;
+                            border-radius: 10px;
+                            padding: 20px;
+                            overflow-y: scroll;
+                            height: 400px;
+                        }
+
+                        .thread {
+                            margin-bottom: 10px;
+                        }
+
+                        .thread__author {
+                            display: flex;
+                            align-items: flex-start;
+                        }
+
+                        .thread__author .user-img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                        }
+
+                        .thread__author .message-content {
+                            background-color: #343a40;
+                            color: #fff;
+                            padding: 10px;
+                            border-radius: 10px;
+                        }
+
+                        .thread__info {
+                            font-size: 12px;
+                            color: #666;
+                            margin-top: 5px;
+                        }
+
+                        .scroll {
+                            overflow-y: auto;
+                        }
+
+                        .message-input {
+                            display: flex;
+                            margin-top: 20px;
+                        }
+
+                        .message-input input[type="text"] {
+                            flex: 1;
+                            padding: 10px;
+                            border-radius: 5px;
+                            border: 1px solid #212529;
+                            background-color: #212529;
+                            color: #f9a219
+                        }
+
+                        .message-input button {
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            background-color: #212529;
+                            color: #fff;
+                            border: none;
+                            cursor: pointer;
+                            margin-left: 10px;
+                        }
+                    </style>
+                    <div class="room__conversation">
+
+                        <div class="threads scroll">
+                            {%for message in room_messages%}
+
+                            <div class="thread">
+                                <div class="thread__top">
+                                    <div class="thread__author">
+                                        <img class="user-img" src="https://via.placeholder.com/50" alt="User Image">
+                                        <div class="message-content" style="">
+                                            
+                                            <div class="d-flex justify-content-between">
+                                                <div class="div">
+                                                    <a style="color: #f9a219; text-transform: capitalize;"
+                                                        href="{% url 'profile' message.user.id %}">
+                                                        {{message.user}}
+                                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </div>
+
+                                                <div class="message-info" style="font-size: .6rem; opacity: .8;">
+                                                    {{message.created|timesince}} ago
+                                                </div>
+                                            </div>
+                                            <div class="message-body p-2">
+                                                {{message.body}}
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- Additional messages can be added here -->
+                        </div>
+                    </div>
+
+                    <div class="message-input">
+                        {% if request.user.is_authenticated %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="text" name="body" placeholder="Type your message...">
+                            <button type="submit">Send</button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <style>
+                .participants {
+                    max-width: 600px;
+                    /* margin: 20px auto; */
+                    background-color: #343a40;
+                    border-radius: 10px;
+                    padding: 20px;
+                }
+
+                .participants__top {
+                    color: #212529;
+                    font-size: 1rem;
+                    margin-bottom: 20px;
+                    font-weight: bold;
+                }
+
+                .participants__list {
+                    max-height: 200px;
+                    overflow-y: auto;
+                }
+
+                .participant {
+                    display: flex;
+                    align-items: center;
+                    text-decoration: none;
+                    color: #ffffff;
+                    margin-bottom: 10px;
+                }
+
+                .avatar {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    margin-right: 10px;
+                }
+
+                .avatar img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .participant p {
+                    font-size: 1rem;
+                    text-transform: capitalize;
+                    margin: 0;
+                }
+            </style>
+            <div class="col-lg-4" id="sidebar">
+                <div class="participants">
+                    <h3 class="participants__top p-3" style="background-color: #f9a219; border-radius: 10px;">
+                        Participants
+                        <span class="" style="color: #616161; font-family: none;">&nbsp; &nbsp;{{number_of_participant}}
+                            Joined</span>
+                    </h3>
+                    <div class="participants__list scroll">
+                        <!-- Participant 1 -->
+                        {% for user in participants %}
+
+                        <a href="{% url 'profile' user.id %}" class="participant">
+                            <div class="avatar avatar--medium">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar">
+                            </div>
+                            <p>{{user.username}}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+           checkWindowSize();
+
+           $(window).resize(function() {
+               checkWindowSize();
+           });
+       });
+
+       function checkWindowSize() {
+           if ($(window).width() < 992) {
+                console.log('hello')
+               $("#sidebar").children().appendTo("#sidebarMobile");
+           } else {
+               $("#sidebarMobile").children().appendTo("#sidebar");
+           }
+       }
+   </script>
+</body>
+
+</html>

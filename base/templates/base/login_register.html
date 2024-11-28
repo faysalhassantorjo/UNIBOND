@@ -3,11 +3,7 @@
 {% block content %}
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+   
 
     div {
         max-width: 400px;
@@ -68,7 +64,7 @@
             <input type="submit" class="btn btn-light" style="font-size: 1.5rem;" value="Login">
         </form>
         <p style="color: #fff; font-size: 1.5rem;">Haven't signed up yet?</p>
-        <a href="{% url 'register' %}" class="btn btn-outline-dark" style="font-size: 1.5rem;">Sign Up</a>
+        <a href="{% url 'register' %}" class="btn btn-outline-dark" style="font-size: 1.5rem; color: #c1c1c1;">Sign Up</a>
     </div>
  
 {% else %}
@@ -139,12 +135,11 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="file" name="user_profile">
     <button type="submit" class="btn btn-dark" style="font-size: 1.5rem;">Register</button>
   </form>
   
     <p style="color: #fff; font-size: 1.5rem;">Already signed up yet?</p>
-    <a href="{% url 'login' %}" class="btn btn-outline-dark" style="font-size: 1.5rem;">Login</a>
+    <a href="{% url 'login' %}" class="btn btn-outline-dark" style="font-size: 1.5rem; color: #c1c1c1;">Login</a>
 </div>
 
 {% endif %}
