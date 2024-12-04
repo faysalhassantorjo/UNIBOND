@@ -76,7 +76,7 @@ def loginPage(request):
     page='login'
 
     if request.method=='POST':
-        username=request.POST.get("username").lower()
+        username=request.POST.get("username")
         password=request.POST.get("password")
 
         try:
@@ -88,7 +88,7 @@ def loginPage(request):
 
         if user is not None:
             login(request,user)
-            UserProfile.objects.create(user = user)
+            user, created = UserProfile.objects.get_or_create(user = user)
             return redirect('home')
         else:
             messages.error(request,'username and password does not exist')
@@ -130,7 +130,6 @@ def home(request):
     room_count=rooms.count()
     topics=Topic.objects.all()
     # room_messages=Message.objects.filter(Q(room__name__icontains=q))
-
     room_participants_counts = {room.id:room.participants.count() for room in rooms}
 
     print('hello ', room_participants_counts)
@@ -157,24 +156,24 @@ def room(request, pk):
 
     
 
-    participants = room.participants.all()
     
-    number_of_participant=len(participants)
+    # number_of_participant=len(participants)
 
     if request.method == "POST":
+        userProfile = UserProfile.objects.get(user = request.user)
         message = Message.objects.create(
-            user=request.user,
+            user=userProfile,
             room=room,
             body=request.POST.get('body')
         )
-        room.participants.add(request.user)
+        if not userProfile in room.participants.all():
+            room.participants.add(userProfile)
         return redirect('room', pk=room.id)
 
     context = {
         'room': room,
         'room_messages': room_messages,
-        'participants': participants,
-        'number_of_participant':number_of_participant
+        # 'number_of_participant':number_of_participant
     }
     return render(request, "base/room2.html", context)
 @login_required(login_url='login')
@@ -198,7 +197,7 @@ def updateRoom(request, pk):
     room = get_object_or_404(Room, id=pk)
 
     # Check if the user is the host of the room
-    if request.user != room.host:
+    if request.user != room.host.user:
         return HttpResponseForbidden("You are not the room creator")
 
     if request.method == "POST":

@@ -114,7 +114,7 @@
                         </div>
                         <div class="room__hosted">
                             <p style="font-size: .8rem;color:white; font-size: .8rem;">Hosted By
-                                <a href="{% url 'profile' room.host.id %}" class="text-info">@{{room.host}}</a>
+                                <a href="{% url 'profile' room.host.id %}" class="text-info">@{{room.host.user.username}}</a>
                             </p>
                         </div>
 
@@ -131,18 +131,13 @@
                         }
 
                         .chat-box .message .user-img {
-                            width: 50px;
-                            height: 50px;
+                            width: 30px;
+                            height: 30px;
                             border-radius: 50%;
                             margin-right: 10px;
                         }
 
-                        .chat-box .message .message-content {
-                            background-color: #212529;
-                            color: #fff;
-                            padding: 10px;
-                            border-radius: 10px;
-                        }
+                
 
                         .chat-box .message .message-info {
                             font-size: 12px;
@@ -170,17 +165,17 @@
                         }
 
                         .thread__author .user-img {
-                            width: 40px;
-                            height: 40px;
+                            width: 25px;
+                            height: 25px;
                             border-radius: 50%;
                             margin-right: 10px;
                         }
 
                         .thread__author .message-content {
-                            background-color: #343a40;
-                            color: #fff;
-                            padding: 10px;
-                            border-radius: 10px;
+                            /* background-color: #343a40; */
+                            color: #d8d8d8;
+                            /* padding: 10px; */
+                            /* border-radius: 10px; */
                         }
 
                         .thread__info {
@@ -225,25 +220,23 @@
                             <div class="thread">
                                 <div class="thread__top">
                                     <div class="thread__author">
-                                        <img class="user-img" src="https://via.placeholder.com/50" alt="User Image">
-                                        <div class="message-content" style="">
+                                        <div class="" title=" {{message.created|timesince}} ago" >
                                             
-                                            <div class="d-flex justify-content-between">
-                                                <div class="div">
-                                                    <a style="color: #f9a219; text-transform: capitalize;"
+                                            <div class="d-flex justify-content-between" >
+                                                <div class="div message-content">
+                                                <img class="user-img" src="{{message.user.imageURL}}" alt="" style="object-fit: cover; color: #d8d8d8;">
+                                                <span style="opacity: .8; font-size: .7rem;"> {{message.created|date:"d/m/ H:i"}}</span>
+
+                                                    <a style="color: #fff; text-transform: capitalize; font-size: .9rem;color: #f9a219;"
                                                         href="{% url 'profile' message.user.id %}">
-                                                        {{message.user}}
-                                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        {{message.user.user.username}} :
+                                                    </a>
                                                 </div>
 
-                                                <div class="message-info" style="font-size: .6rem; opacity: .8;">
-                                                    {{message.created|timesince}} ago
+                                                <div class="message-body" title="hello"  style="font-size: 1rem; color: #d8d8d8; ">
+                                                     &nbsp; {{message.body}}
                                                 </div>
-                                            </div>
-                                            <div class="message-body p-2">
-                                                {{message.body}}
-                                            </div>
-                                            
+                                            </div>                                      
 
                                         </div>
                                     </div>
@@ -311,7 +304,8 @@
 
                 .avatar img {
                     width: 100%;
-                    height: auto;
+                    height: 100%;
+                    object-fit: cover;
                 }
 
                 .participant p {
@@ -324,18 +318,18 @@
                 <div class="participants">
                     <h3 class="participants__top p-3" style="background-color: #f9a219; border-radius: 10px;">
                         Participants
-                        <span class="" style="color: #616161; font-family: none;">&nbsp; &nbsp;{{number_of_participant}}
+                        <span class="" style="color: #616161; font-family: none;">&nbsp; &nbsp;{{room.participants.all|length}}
                             Joined</span>
                     </h3>
                     <div class="participants__list scroll">
                         <!-- Participant 1 -->
-                        {% for user in participants %}
+                        {% for user in room.participants.all %}
 
                         <a href="{% url 'profile' user.id %}" class="participant">
                             <div class="avatar avatar--medium">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar">
+                                <img src="{{user.imageURL}}" alt="">
                             </div>
-                            <p>{{user.username}}</p>
+                            <p>{{user.user.username}}</p>
                         </a>
                         {% endfor %}
                     </div>
