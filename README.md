@@ -1,44 +1,55 @@
-Deploy this proejct using NGINX web server
+# Django Deployment with Gunicorn and Nginx
 
+This guide explains how to deploy a Django application using Gunicorn as the application server and Nginx as a reverse proxy.
 
-Installing python and nginx
+## Prerequisites
 
-update the server's package index 
+- A server with a Linux-based operating system (Ubuntu recommended).
+- Python 3 installed on the server.
+- Basic understanding of command-line operations.
+
+---
+
+## Installation Steps
+
+### 1. Install Required Packages
+
+Update the server's package index and install Python, pip, and Nginx:
+
+```bash
 sudo apt update
 sudo apt install python3-pip python3-dev nginx
+2. Install Django and Gunicorn
+Install Django and Gunicorn using pip:
 
-
-This will install python, pip and nginx server
-
-Installing Django and gunicorn
 
 pip install django gunicorn
-Create a Python Application
-Django-admin startprojct your_project_name
+Create a Django project:
 
 
+django-admin startproject your_project_name
+3. Allow Port 8000 in Firewall
+Enable traffic on port 8000 for testing:
 
 sudo ufw allow 8000
+Run the application to ensure it's working locally:
 
 
-This opens port 8000 by allowing it over the firewall.
-
-
-Check that the is project open on 8000 port
 ~/projectdir/manage.py runserver 0.0.0.0:8000
+If the application runs successfully, proceed to configure Gunicorn.
+
+4. Configure Gunicorn
+Start Gunicorn for Testing
+Run Gunicorn to serve the Django application:
 
 
-If Application Run successfully on local server then Configure the Gunicorn
+gunicorn --bind 0.0.0.0:8000 your_project_name.wsgi
+Create a Gunicorn Socket File
+Create a socket file to manage Gunicorn:
 
 
-
-Configuring Gunicorn
-
-gunicorn's ability to serve our application by firing the following commands:
-gunicorn --bind 0.0.0.0:8000 unibond.wsgi
-
-Let's create a system socket file for gunicorn now:
 sudo vim /etc/systemd/system/gunicorn.socket
+Add the following content:
 
 [Unit]
 Description=gunicorn socket
@@ -48,34 +59,13 @@ ListenStream=/run/gunicorn.sock
 
 [Install]
 WantedBy=sockets.target
+Create a Gunicorn Service File
+Create a service file to manage Gunicorn:
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Next, we will create a service file for gunicorn
 sudo vim /etc/systemd/system/gunicorn.service
+Add the following content (replace torjo and projectdir with your username and project directory):
+
 
 [Unit]
 Description=gunicorn daemon
@@ -90,34 +80,27 @@ ExecStart=/home/torjo/projectdir/env/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/gunicorn.sock \
-          studybud.studybud.wsgi:application
+          your_project_name.wsgi:application
 
 [Install]
-WantedBy=multi-ser.target
+WantedBy=multi-user.target
+5. Configure Nginx as a Reverse Proxy
+Create an Nginx configuration file for your project:
 
 
+sudo vim /etc/nginx/sites-available/your_project_name
+Add the following configuration:
 
-
-
-
-
-
-
-
-
-
-Configuring Nginx as a reverse proxy
-
-
-sudo vim /etc/nginx/sites-available/unibond
-
+nginx
+Copy code
 server {
     listen 80;
-    server_name localhost;       
+    server_name localhost;
+    
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        root /home/torjo/projectdir/studybud;
+        root /home/torjo/projectdir/your_project_name;
     }
 
     location / {
@@ -125,12 +108,33 @@ server {
         proxy_pass http://unix:/run/gunicorn.sock;
     }
 }
-
-Activate the configuration using the following command 
-
-sudo ln -s /etc/nginx/sites-available/unibond /etc/nginx/sites-enabled/
+Activate the configuration by creating a symbolic link:
 
 
+sudo ln -s /etc/nginx/sites-available/your_project_name /etc/nginx/sites-enabled/
+Restart Nginx to apply the changes:
 
-Restart nginx and allow the changes to take place.
+
 sudo systemctl restart nginx
+6. Starting the Services
+Enable and start Gunicorn and Nginx:
+
+
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+sudo systemctl restart nginx
+Directory Structure
+The directory structure for your project should look like this:
+
+
+/home/torjo/projectdir/
+├── your_project_name/
+│   ├── your_project_name/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── manage.py
+│   └── static/
+├── env/  # Virtual environment directory
+└── requirements.txt
